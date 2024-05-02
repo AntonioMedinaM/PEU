@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PEU</title>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='IFTlogo.svg') }}">
+  <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+  <style>
+    .glassmorphism {
+      background-color: rgba(255, 255, 255, 0.5); 
+      backdrop-filter: blur(10px); 
+      border-radius: 10px; 
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08); /* Sombra suave */
+    }
+    body {
+      background: rgb(0, 0, 0);
+      background: linear-gradient(90deg, rgba(0, 0, 0, 0.9267879026610644) 0%, rgba(82, 138, 118, 1) 50%, rgba(116, 194, 167, 1) 100%);
+    }
+    .bgift {
+      background: rgb(0, 0, 0);
+      background: linear-gradient(90deg, rgba(0, 0, 0, 0.9267879026610644) 0%, rgba(82, 138, 118, 1) 50%, rgba(116, 194, 167, 1) 100%);
+    }
+    .bg {
+      background-image: url("{{ url_for('static', filename='IFTlogo.svg') }}");
+      background-position: center center;
+      background-repeat: no-repeat;
+    }
+    .bg-gris {
+      background: rgb(211, 211, 211);
+    }
+    .bg-gris-table {
+      background-color: gray;
+    }
+    .navbar-custom {
+      background-color: rgba(255, 255, 255, 0.5); 
+      backdrop-filter: blur(10px); 
+      border-radius: 10px; 
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08); 
+    }
+    .navbar-brand img {
+      height: 30px; 
+    }
+  </style>
+</head>
+<body>
+  <!-- Menú de navegación -->
+  <nav class="navbar navbar-expand-lg navbar-custom">
+    <div class="container-fluid">
+      <!-- Enlace para abrir el modal -->
+      <!-- <a class="navbar-brand" data-bs-toggle="modal" data-bs-target="#cerrarSesionModal">
+        <img src="{{ url_for('static', filename='IFTlogo.svg') }}" alt="Logo">
+      </a> -->
+      
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end">
+        <!-- Estructura condicional para mostrar el saludo según el sexo del usuario -->
+        {% if sexo == "Masculino" %}
+            <h5 class="text-center py-2">¡Bienvenido {{ nombre }}!</h4>
+        {% elif sexo == "Femenino" %}
+            <h5 class="text-center py-2">¡Bienvenida {{ nombre }}!</h4>
+        {% endif %}
+      </div>
+    
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <h2>|</h2>
+        {% include 'menu.html' %}
+      </div>
+    </div>
+  </nav>  
+
+  <!-- Modal de Cerrar Sesión -->
+  <div class="modal fade" id="cerrarSesionModal" tabindex="-1" aria-labelledby="cerrarSesionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="cerrarSesionModalLabel">¿Desea cerrar sesión?</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <p>¿Está seguro de que desea cerrar la sesión?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <!-- Aquí puedes agregar el enlace para cerrar sesión -->
+          <a href="{{ url_for('views.login') }}" class="btn bgift text-white">Cerrar Sesión</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenido principal -->
+  <br>
+  <div class="container mt-5 rounded shadow">
+    <div class="row align-items-stretch">
+      <div class="glassmorphism col bg-white p-5">
+        <div class="text-center">
+          <img src="{{ url_for('static', filename='logo_ift_horizontal.png') }}" height="80">
+        </div>
+
+        <div class="py-2 px-5">
+
+          <ul class="list-group">
+            <li class="list-group-item"><strong>Página principal de Industria</strong></li>
+            <li class="list-group-item"><strong>Temas relevantes</strong>
+                <ul class="list-group"class="list-group">
+                    <li class="list-group-item">Red compartida</li>
+                    <li class="list-group-item">Licitaciones de espectro radioeléctrico</li>
+                    <li class="list-group-item">Preponderancia sector radiodifusión</li>
+                    <li class="list-group-item">Preponderancia sector telecomunicaciones</li>
+                    <li class="list-group-item">Reglas de portabilidad</li>
+                    <li class="list-group-item">Lineamientos de Colaboración en Materia de Seguridad y Justicia</li>
+                    <li class="list-group-item">Estudio de la OCDE</li>
+                </ul>
+            </li>
+            <li class="list-group-item"><strong>Espectro Radioeléctrico</strong></li>
+            <li class="list-group-item"><strong>Política Regulatoria</strong>
+                <ul class="list-group">
+                    <li class="list-group-item">Modelos de costos</li>
+                    <li class="list-group-item">Regulación técnica</li>
+                    <li class="list-group-item">Micrositio de Despliegue de Infraestructura</li>
+                    <li class="list-group-item">Red Nacional de Banda Ancha</li>
+                    <li class="list-group-item">Preponderancia sector telecomunicaciones</li>
+                    <li class="list-group-item">Convenios de servicios mayoristas del agente económico preponderante</li>
+                    <li class="list-group-item">Disposiciones Técnicas</li>
+                    <li class="list-group-item">Preponderancia Sector Radiodifusión</li>
+                    <li class="list-group-item">Puntos de interconexión a la red pública de telecomunicaciones del agente económico preponderante</li>
+                    <li class="list-group-item">Sistema Electrónico de Interconexión</li>
+                    <li class="list-group-item">Ofertas de Referencia</li>
+                    <li class="list-group-item">Acreditación, Autorización, Designación y Reconocimiento de Laboratorios de Prueba</li>
+                    <li class="list-group-item">Comité de migración TDM-IP</li>
+                    <li class="list-group-item">Plan de Acciones en materia de Ciberseguridad</li>
+                    <li class="list-group-item">Estudios</li>
+                    <li class="list-group-item">Gestión de tráfico y administración de red</li>
+                    <li class="list-group-item">Informes de Indicadores Clave de Desempeño</li>
+                    <li class="list-group-item">Velocímetros Internet</li>
+                    <li class="list-group-item">Por Sustancial de Mercado</li>
+                    <li class="list-group-item">Revisión a la regulación sobre la localización geográfica de llamadas al número de emergencia 911</li>
+                    <li class="list-group-item">Recomendaciones IPv6</li>
+                </ul>
+            </li>
+            <li class="list-group-item"><strong>Consultas Públicas</strong></li>
+            <li class="list-group-item"><strong>Registro de Regulaciones</strong></li>
+            <li class="list-group-item"><strong>Competencia Económica</strong>
+                <ul class="list-group">
+                    <li class="list-group-item">Autoridad Investigadora</li>
+                    <li class="list-group-item">Unidad de Competencia Económica</li>
+                </ul>
+            </li>
+            <li class="list-group-item"><strong>Medios y Contenidos Audiovisuales</strong></li>
+            <li class="list-group-item"><strong>Asuntos Internacionales</strong></li>
+            <li class="list-group-item"><strong>Concesiones y Servicios</strong>
+                <ul class="list-group">
+                    <li class="list-group-item">Consultar Registro Público de Concesiones</li>
+                    <li class="list-group-item">Acuerdo P/IFT/261114/379</li>
+                    <li class="list-group-item">Certificación y licencias</li>
+                    <li class="list-group-item">Radio y Televisión</li>
+                    <li class="list-group-item">Homologación</li>
+                    <li class="list-group-item">Formato para presentar la Estructura Accionaria o de Partes Sociales o Aportaciones (Art. 112)</li>
+                    <li class="list-group-item">Lineamientos Grales. para el Otorgamiento de las Concesiones a que se refiere el Título Cuarto de la LFTYR</li>
+                    <li class="list-group-item">Reglas para el Otorgamiento de Autorizaciones en materia de Telecomunicaciones</li>
+                    <li class="list-group-item">Guías</li>
+                    <li class="list-group-item">Consulta el Registro Nacional de Peritos.</li>
+                    <li class="list-group-item">Empresas Certificadoras Autorizadas para realizar Estudios de No Interferencia y emitir la Constancia correspondiente</li>
+                    <li class="list-group-item">Micrositio de acreditación de peritos</li>
+                </ul>
+            </li>
+            <li class="list-group-item"><strong>Unidad de Cumplimiento</strong></li>
+            <li class="list-group-item"><strong>Centro de Estudios</strong></li>
+            <li class="list-group-item"><strong>Homologación y Evaluación de la Conformidad</strong></li>
+            <li class="list-group-item"><strong>Transformación Digital</strong>
+                <ul class="list-group">
+                    <li class="list-group-item">Blog</li>
+                </ul>
+            </li>
+        </ul>
+        
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+</body>
+</html>

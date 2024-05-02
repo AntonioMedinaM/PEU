@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEU</title>
+    <link rel="icon"  type="image/png" href="{{ url_for('static', filename='IFTlogo.svg') }}">
+    <link href = "{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    
+    <!-- <link href = "bootstrap.min.css" rel="stylesheet"> -->
+    <style>
+        body{
+            background: rgb(211, 211, 211);
+        }
+        .bg{
+            /* background: rgb(94,136,51);
+            background: linear-gradient(90deg, rgba(94,136,51,0.9267879026610644) 0%, rgba(152,194,80,1) 52%, rgba(203,203,203,1) 92%); */
+            background: rgb(0,0,0);
+background: linear-gradient(90deg, rgba(0,0,0,0.9267879026610644) 0%, rgba(82,138,118,1) 50%, rgba(116,194,167,1) 100%);
+        }
+        .alert {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            width: 50%;
+        }
+        .bg-gris{
+            background: rgb(211, 211, 211);
+        }
+        
+    </style>
+</head>
+<body>
+
+    <div class="container w-75 bg-white mt-5 rounded shadow">
+        <div class="row align-items-stretch">
+            <div class="col-lg-6 col-xl-6 rounded">
+                
+                <div class="text-center py-3">
+                    <img src="{{ url_for('static', filename='Logo_del_IFT.png') }}" height="130">
+
+                </div>
+                <div class="text-center">
+                    <h2 class="fw-fold" >Iniciar sesión</h2>
+                    
+                </div>
+                
+
+                
+    
+                <!-- Mensaje de alerta por cuenta de acceso incorrecta -->
+                <div id="passwordMessage" class="alert alert-danger mt-2 d-none" role="alert"></div>
+                <div class="mb-4">
+                   
+
+                    <p>Por favor, ingrese su cuenta de acceso</p>
+                
+                    <form action="{{ url_for('views.login') }}" method="POST" id="passwordForm" onsubmit="return validarContrasena()">
+                        <div class="mb-4">
+                            <label for="email" class="form-label">Correo electrónico:</label>
+                            <input type="email" class="form-control bg-gris" name="email" placeholder="Correo con arroba" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="password" class="form-label" id="password">Contraseña:</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control bg-gris" name="password" id="passwordInput" required oncopy="return false" onpaste="return false" oncut="return false">
+                                <button type="button" class="btn btn-outline-secondary" onclick="togglePasswordVisibility()">Mostrar</button>
+                            </div>
+                        </div>
+                        <!-- <div class="mb-4 form-check">
+                            <input type="checkbox" name="connected" class="form-check-input">
+                            <label for="connected">Mantenerme conectado</label>
+                        </div> -->
+                        <div class="text-center">
+                            <button type="submit" class="btn bg w-45 text-white">Iniciar</button>
+                        </div>
+
+                        <div class="my-3">
+                            <span>¿No tiene cuenta? Favor de <a href="{{ url_for('views.signup') }}">registrarse</a></span> <br><br>
+                            <span><a href="{{ url_for('views.formulario_recuperar_contrasena') }}">Recuperar contraseña</a></span>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-6 bg p-5 rounded-end d-flex flex-column justify-content-center align-items-center text-white">
+                <h2 class="fw-bold mt-5">Prueba de Experiencia de Usuario</h2>
+                <p >Este sistema tiene como objetivo generar conciencia en el programador sobre la importancia de la experiencia de usuario, para crear una interfaz más atractiva y así fomentar el uso de las herramientas generadas para mejorar su trabajo y evitar la resistencia al cambio.</p>
+            </div>
+            
+        </div>
+        
+    </div>
+    
+    <script>
+        function togglePasswordVisibility() {
+            var passwordInput = document.getElementById("passwordInput");
+            var toggleButton = document.querySelector('button');
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                toggleButton.textContent = "Ocultar";
+            } else {
+                passwordInput.type = "password";
+                toggleButton.textContent = "Mostrar";
+            }
+        }
+    </script>
+    
+    <script>
+        document.getElementById("passwordForm").addEventListener("submit", function(event) {
+            var passwordInput = document.getElementById("passwordInput").value;
+            var passwordMessage = document.getElementById("passwordMessage");
+
+            var message = "";
+
+            if (!(/[A-Z]/.test(passwordInput)) || (!(/\d/.test(passwordInput))) || (passwordInput.length < 8 || passwordInput.length > 16)) {
+                passwordMessage.textContent = "Cuenta de acceso incorrecta.";
+                passwordMessage.classList.remove("d-none");
+                setTimeout(function() {
+                    passwordMessage.classList.add("d-none");
+                }, 5000);
+                event.preventDefault();
+                return;
+            }
+        });
+    </script>
+        <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    
+</body>
+</html>

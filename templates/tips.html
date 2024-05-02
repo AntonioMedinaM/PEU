@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PEU</title>
+  <link rel="icon"  type="image/png" href="{{ url_for('static', filename='IFTlogo.svg') }}">
+  <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+  <style>
+    .glassmorphism {
+      background-color: rgba(255, 255, 255, 0.5); 
+      backdrop-filter: blur(10px); 
+      border-radius: 10px; 
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08); /* Sombra suave */
+    }
+    body {
+      background: rgb(0,0,0);
+      background: linear-gradient(90deg, rgba(0,0,0,0.9267879026610644) 0%, rgba(82,138,118,1) 50%, rgba(116,194,167,1) 100%);
+    }
+    .bgift {
+      background: rgb(0,0,0);
+      background: linear-gradient(90deg, rgba(0,0,0,0.9267879026610644) 0%, rgba(82,138,118,1) 50%, rgba(116,194,167,1) 100%);
+    }
+    .bg {
+      background-image: url("{{ url_for('static', filename='IFTlogo.svg') }}");
+      background-position: center center;
+      background-repeat: no-repeat;
+    }
+    .bg-gris {
+      background: rgb(211, 211, 211);
+    }
+    .bg-gris-table {
+      background-color: gray;
+    }
+    .navbar-custom {
+      background-color: rgba(255, 255, 255, 0.5); 
+      backdrop-filter: blur(10px); 
+      border-radius: 10px; 
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08); 
+    }
+    .navbar-brand img {
+      height: 30px; 
+    }
+
+    /* Estilos para la información desplegable al hacer hover */
+    .btn-info-container {
+      display: none;
+      position: absolute;
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+      top: calc(100% + 10px); /* 10px debajo del botón */
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .btn-container:hover .btn-info-container {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+     <!-- Menú de navegación -->
+  <nav class="navbar navbar-expand-lg navbar-custom">
+    <div class="container-fluid">
+      <!-- Enlace para abrir el modal -->
+      <!-- <a class="navbar-brand" data-bs-toggle="modal" data-bs-target="#cerrarSesionModal">
+        <img src="{{ url_for('static', filename='IFTlogo.svg') }}" alt="Logo">
+      </a> -->
+      
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <!-- <div class="collapse navbar-collapse justify-content-end">
+        {% if sexo == "Masculino" %}
+            <h5 class="text-center py-2">¡Bienvenido {{ nombre }}!</h4>
+        {% elif sexo == "Femenino" %}
+            <h5 class="text-center py-2">¡Bienvenida {{ nombre }}!</h4>
+        {% endif %}
+      </div> -->
+    
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <h2>|</h2>
+        {% include 'menu.html' %}
+      </div>
+    </div>
+    </nav>  
+
+  <!-- Modal de Cerrar Sesión -->
+  <div class="modal fade" id="cerrarSesionModal" tabindex="-1" aria-labelledby="cerrarSesionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="cerrarSesionModalLabel">¿Desea cerrar sesión?</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <p>¿Está seguro de que desea cerrar la sesión?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <!-- Aquí puedes agregar el enlace para cerrar sesión -->
+          <a href="{{ url_for('views.login') }}" class="btn bgift text-white">Cerrar Sesión</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenido principal -->
+  <br>
+  <div class="container mt-5 rounded shadow">
+    <div class="row align-items-stretch">
+      <div class="glassmorphism col bg-white px-5 py-2">
+        <div class="text-center">
+          <img src="{{ url_for('static', filename='logo_ift_horizontal.png') }}" height="80">
+        </div>
+  
+        <!-- <div class="row">
+          <div class="col-md-6 mb-3">
+            <div class="btn-container position-relative">
+              <button class="btn btn-light">Registro</button>
+              <div class="btn-info-container">
+                <p>Introduce una contraseña válida para que el registro se realice correctamente</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="btn-container position-relative">
+              <button class="btn btn-light">Recuperar contraseña</button>
+              <div class="btn-info-container">
+                <p>Procura que tu contraseña coincida con la confirmación, para que el sistema reconozca que esa será tu nueva contraseña</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="btn-container position-relative">
+              <button class="btn btn-light">Iniciar sesión</button>
+              <div class="btn-info-container">
+                <p>Procura haber registrado una cuenta antes de iniciar sesión, de lo contrario, tu cuenta no será válida</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="btn-container position-relative">
+              <button class="btn btn-light">Usuarios</button>
+              <div class="btn-info-container">
+                <p>Se puede observar un par de botones en la tabla, uno modificará un dato en específico y el otro lo eliminará definitivamente</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="btn-container position-relative">
+              <button class="btn btn-light">Menú</button>
+              <div class="btn-info-container">
+                <p>Cuenta con cinco enlaces, cada uno lo redirigirá a un apartado en específico</p>
+              </div>
+            </div>
+          </div>
+        </div> -->
+        <div class="py-5">
+          <div class="row">
+            <div class="col-md-6 col-lg-4 mb-3">
+              <div class="btn-container position-relative">
+                <a href="https://www.ift.org.mx/usuarios-y-audiencias/detox-digital" class="btn collapsible local-link" data-collapse="detox_digital" style="background-color: #32d945; color: #FFFFFF;">
+                  <span>Detox Digital</span>
+                </a>
+                <div class="btn-info-container">
+                  <p>La desintoxicación digital hace referencia a  limitar el uso de las TIC, como teléfonos celulares, computadoras, tabletas, televisión, consolas de videojuegos, entre otras, así como de plataformas digitales y redes sociales.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-3">
+              <div class="btn-container position-relative">
+                <a href="http://www.meinformo.ift.org.mx/" class="btn collapsible" data-collapse="me_informo_" style="background-color: #157ffb; color: #FFFFFF;" target="_blank">
+                  <span>Me Informo</span>
+                </a>
+                <div class="btn-info-container">
+                  <p>Ingresa a nuestro nuevo portal y aprende mas sobre tus servicios de telecomunicaciones.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-3">
+              <div class="btn-container position-relative">
+                <a href="https://www.ift.org.mx/usuarios-y-audiencias/alfabetizacion-digital" class="btn collapsible local-link" data-collapse="alfabetizacion_digital" style="background-color: #ef9f0e; color: #FFFFFF;">
+                  <span>Alfabetización Digital</span>
+                </a>
+                <div class="btn-info-container">
+                  <p>En este apartado, se detallan las acciones que emprende de manera permanente el IFT, con el objetivo de proveer de habilidades digitales a los usuarios, las cuales les permiten involucrarse en el entorno digital.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-3">
+              <div class="btn-container position-relative">
+                <a href="https://www.ift.org.mx/usuarios-y-audiencias/los-hernandez" class="btn collapsible local-link" data-collapse="los_hernandez" style="background-color: #6d7a7d; color: #FFFFFF;">
+                  <span>Los Hernández</span>
+                </a>
+                <div class="btn-info-container">
+                  <p>Conoce a los Hernández, a través de sus historias identifícate y resuelve algunos de los problemas que tengan en común en materia de telecomunicaciones.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-3">
+              <div class="btn-container position-relative">
+                <a href="https://www.ift.org.mx/usuarios-y-audiencias/tus-servicios" class="btn collapsible local-link" data-collapse="tus_servicios_" style="background-color: #3099a6; color: #FFFFFF;">
+                  <span>Tus Servicios</span>
+                </a>
+                <div class="btn-info-container">
+                  <p>Consulta los tips y consejos que tenemos para ti relacionados con tus servicios de Telecomunicaciones.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-3">
+              <div class="btn-container position-relative">
+                <a href="https://www.ift.org.mx/usuarios-y-audiencias/accesibilidad" class="btn collapsible local-link" data-collapse="accesibilidad" style="background-color: #78ad4c; color: #FFFFFF;">
+                  <span>Accesibilidad</span>
+                </a>
+                <div class="btn-info-container">
+                  <p>Conoce los derechos de los usuarios con discapacidad y las acciones que ha realizado el IFT a su favor.</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-4 mb-3">
+              <div class="btn-container position-relative">
+                <a href="https://www.ift.org.mx/usuarios-y-audiencias/eventos-ift" class="btn collapsible local-link" data-collapse="foros_y_eventos" style="background-color: #2fb4fe; color: #FFFFFF;">
+                  <span>Foros y Eventos</span>
+                </a>
+                <div class="btn-info-container">
+                  <p>Consulta las fotos, videos y presentaciones de los eventos que ha organizado el IFT en materia de usuarios.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-3">
+              <div class="btn-container position-relative">
+                <a href="https://www.ift.org.mx/usuarios-y-audiencias/carta-de-derechos" class="btn collapsible local-link" data-collapse="carta_de_derechos" style="background-color: #78ad4c; color: #FFFFFF;">
+                  <span>Carta de Derechos</span>
+                </a>
+                <div class="btn-info-container">
+                  <p>Aquí consulta tus principales derechos como usuario de servicios de telecomunicaciones.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-3">
+              <div class="btn-container position-relative">
+                <a href="https://ciberseguridad.ift.org.mx/" class="btn collapsible local-link" data-collapse="ciberseguridad_" style="background-color: #343a40; color: #FFFFFF;">
+                  <span>Ciberseguridad</span>
+                </a>
+                <div class="btn-info-container">
+                  <p>Aprende como mantener tus dispositivos a salvo de ataques cibernéticos.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+        <!-- <div class="row">
+          <div class="col-md-6 col-lg-4 mb-3">
+            <div class="btn-container position-relative">
+              <a href="https://www.ift.org.mx/usuarios-y-audiencias/detox-digital" class="btn collapsible local-link" data-collapse="detox_digital" style="background-color: #32d945; color: #FFFFFF;">
+                <span>Detox Digital</span>											</a>
+              <div class="content" id="detox_digital" style="display: none;">
+                <br>
+                  <a href="" style="color: aliceblue;" class="local-link" target="_blank">
+                    <p>La desintoxicación digital hace referencia a  limitar el uso de las TIC, como teléfonos celulares, computadoras, tabletas, televisión, consolas de videojuegos, entre otras, así como de plataformas digitales y redes sociales.</p>
+                  </a>
+                <img src="https://www.ift.org.mx/sites/default/files/tce_detox_digital.jpg" alt="" class="img-responsive marginAuto">
+                <br>
+                <i class="fa fa-close"></i>
+              </div>
+            </div>
+            <div class="clearfix"></div>
+                                <div class="mt-5">
+              <a href="http://www.meinformo.ift.org.mx/" class="btn collapsible" data-collapse="me_informo_" style="background-color: #157ffb; color: #FFFFFF;" target="_blank">
+                <span>Me Informo </span>											</a>
+              <div class="content" id="me_informo_" style="display: none;">
+                <br>
+                  <a href="" style="color: aliceblue;" class="local-link" target="_blank">
+                    <p>Ingresa a nuestro nuevo portal y aprende mas sobre tus servicios de telecomunicaciones.</p>
+                  </a>
+                <img src="https://www.ift.org.mx/sites/default/files/tce_me_informo.jpg" alt="" class="img-responsive marginAuto">
+                <br>
+                <i class="fa fa-close"></i>
+              </div>
+            </div>
+            <div class="clearfix"></div>
+                                <div class="mt-5">
+              <a href="https://www.ift.org.mx/usuarios-y-audiencias/alfabetizacion-digital" class="btn collapsible local-link" data-collapse="alfabetizacion_digital" style="background-color: #ef9f0e; color: #FFFFFF;">
+                <span>Alfabetización Digital</span>											</a>
+              <div class="content" id="alfabetizacion_digital" style="display: none;">
+                <br>
+                  <a href="" style="color: aliceblue;" class="local-link" target="_blank">
+                    <p>En este apartado, se detallan las acciones que emprende de manera permanente el IFT, con el objetivo de proveer de habilidades digitales a los usuarios, las cuales les permiten involucrarse en el entorno digital.</p>
+                  </a>
+                <img src="https://www.ift.org.mx/sites/default/files/alfabetizacion_digital.jpg" alt="" class="img-responsive marginAuto">
+                <br>
+                <i class="fa fa-close"></i>
+              </div>
+            </div>
+            <div class="clearfix"></div>
+                                <div class="mt-5">
+              <a href="https://www.ift.org.mx/usuarios-y-audiencias/los-hernandez" class="btn collapsible local-link" data-collapse="los_hernandez" style="background-color: #6d7a7d; color: #FFFFFF;">
+                <span>Los Hernández</span>											</a>
+              <div class="content" id="los_hernandez" style="display: none;">
+                <br>
+                  <a href="" style="color: aliceblue;" class="local-link" target="_blank">
+                    <p>Conoce a los Hernández, a través de sus historias identifícate y resuelve algunos de los problemas que tengan en común en materia de telecomunicaciones.</p>
+                  </a>
+                <img src="https://www.ift.org.mx/sites/default/files/tce_hernandez.jpg" alt="" class="img-responsive marginAuto">
+                <br>
+                <i class="fa fa-close"></i>
+              </div>
+            </div>
+            <div class="clearfix"></div>
+                                <div class="mt-5">
+              <a href="https://www.ift.org.mx/usuarios-y-audiencias/tus-servicios" class="btn collapsible local-link" data-collapse="tus_servicios_" style="background-color: #3099a6; color: #FFFFFF;">
+                <span>Tus Servicios </span>											</a>
+              <div class="content" id="tus_servicios_" style="display: none;">
+                <br>
+                  <a href="" style="color: aliceblue;" class="local-link" target="_blank">
+                    <p>Consulta los tips y consejos que tenemos para ti relacionados con tus servicios de Telecomunicaciones. </p>
+                  </a>
+                <img src="https://www.ift.org.mx/sites/default/files/tce_servicios.jpg" alt="" class="img-responsive marginAuto">
+                <br>
+                <i class="fa fa-close"></i>
+              </div>
+            </div>
+            <div class="clearfix"></div>
+                                <div class="mt-5">
+              <a href="https://www.ift.org.mx/usuarios-y-audiencias/accesibilidad" class="btn collapsible local-link" data-collapse="accesibilidad" style="background-color: #78ad4c; color: #FFFFFF;">
+                <span>Accesibilidad</span>											</a>
+              <div class="content" id="accesibilidad" style="display: none;">
+                <br>
+                  <a href="" style="color: aliceblue;" class="local-link" target="_blank">
+                    <p>Conoce los derechos de los usuarios con discapacidad y las acciones que ha realizado el IFT a su favor.</p>
+                  </a>
+                <img src="https://www.ift.org.mx/sites/default/files/tce_accesibilidad.jpg" alt="" class="img-responsive marginAuto">
+                <br>
+                <i class="fa fa-close"></i>
+              </div>
+            </div>
+            <div class="clearfix"></div>
+                                <div class="mt-5">
+              <a href="https://www.ift.org.mx/usuarios-y-audiencias/eventos-ift" class="btn collapsible local-link" data-collapse="foros_y_eventos" style="background-color: #2fb4fe; color: #FFFFFF;">
+                <span>Foros y Eventos</span>											</a>
+              <div class="content" id="foros_y_eventos" style="display: none;">
+                <br>
+                  <a href="" style="color: aliceblue;" class="local-link" target="_blank">
+                    <p>Consulta las fotos, videos y presentaciones de los eventos que ha organizado el IFT en materia de usuarios.</p>
+                  </a>
+                <img src="https://www.ift.org.mx/sites/default/files/tce_eventos.jpg" alt="" class="img-responsive marginAuto">
+                <br>
+                <i class="fa fa-close"></i>
+              </div>
+            </div>
+            <div class="clearfix"></div>
+                                <div class="mt-5">
+              <a href="https://www.ift.org.mx/usuarios-y-audiencias/carta-de-derechos" class="btn collapsible local-link" data-collapse="carta_de_derechos" style="background-color: #78ad4c; color: #FFFFFF;">
+                <span>Carta de Derechos</span>											</a>
+              <div class="content" id="carta_de_derechos" style="display: none;">
+                <br>
+                  <a href="" style="color: aliceblue;" class="local-link" target="_blank">
+                    <p>Aquí consulta tus principales derechos como usuario de servicios de telecomunicaciones.</p>
+                  </a>
+                <img src="https://www.ift.org.mx/sites/default/files/tce_carta_derechos.jpg" alt="" class="img-responsive marginAuto">
+                <br>
+                <i class="fa fa-close"></i>
+              </div>
+            </div>
+            <div class="clearfix"></div>
+                                <div class="mt-5">
+              <a href="https://ciberseguridad.ift.org.mx/" class="btn collapsible" data-collapse="ciberseguridad_" style="background-color: #343a40; color: #FFFFFF;" target="_blank">
+                <span>Ciberseguridad </span>											</a>
+              <div class="content" id="ciberseguridad_">
+                <br>
+                  <a href="" style="color: aliceblue;" class="local-link" target="_blank">
+                    <p>Aprende como mantener tus dispositivos a salvo de ataques cibernéticos.</p>
+                  </a>
+                <img src="https://www.ift.org.mx/sites/default/files/tce_ciberseguridad.jpg" alt="" class="img-responsive marginAuto">
+                <br>
+                <i class="fa fa-close"></i>
+              </div>
+            </div>
+            <div class="clearfix"></div>
+                              </div>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEU</title>
+    <link rel="icon"  type="image/png" href="{{ url_for('static', filename='IFTlogo.svg') }}">
+    <link href = "{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    
+    <!-- <link href = "bootstrap.min.css" rel="stylesheet"> -->
+    <style>
+        body{
+            /* background: linear-gradient(90deg, rgba(94,136,51,0.9267879026610644) 0%, rgba(152,194,80,1) 52%, rgba(203,203,203,1) 92%); */
+            background: rgb(0,0,0);
+            background: linear-gradient(90deg, rgba(0,0,0,0.9267879026610644) 0%, rgba(82,138,118,1) 50%, rgba(116,194,167,1) 100%);
+        }
+        .bg{
+            background: rgb(0,0,0);
+            background: linear-gradient(90deg, rgba(0,0,0,0.9267879026610644) 0%, rgba(82,138,118,1) 50%, rgba(116,194,167,1) 100%);
+        }
+        .bg-gris{
+            background: rgb(211, 211, 211);
+        }
+        .alert {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            width: 50%;
+        }
+        
+    </style>
+</head>
+<body>
+
+    <div class="container w-50 bg-primary mt-5 rounded shadow">
+        <div class="row align-items-stretch">
+            <!-- <div class="col bg d-none d-lg-block col-md-5 col-lg-5 col-xl-6 rounded">
+            </div> -->
+            <div class="col bg-white p-5 rounded-end">
+                <!-- <div class="text-end">
+                    <img src="{{ url_for('static', filename='IFTlogo.svg') }}" height="30">
+                </div> -->
+
+                <h2 class="fw-fold text-center py-3">Recuperar contraseña</h2>
+    
+                <!-- Mensaje de alerta por cuenta de acceso incorrecta -->
+                <div id="passwordMessage" class="alert alert-danger mt-2 d-none" role="alert"></div>
+                <div id="successMessage" class="alert alert-success mt-2 d-none" role="alert">Los datos fueron cambiados exitosamente.</div>
+
+
+                <form action="{{ url_for('views.formulario_recuperar_contrasena') }}" method="POST" id="passwordForm" onsubmit="return validarContrasena()">
+                    <div class="mb-4">
+                        <label for="email" class="form-label">Correo electrónico:</label>
+                        <input type="email" class="form-control bg-gris" name="email">
+                    </div>
+                    <div class="mb-4">
+                        <label for="password" class="form-label" id="password">Nueva contraseña:</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control bg-gris" name="password" id="passwordInput" oncopy="return false" onpaste="return false" oncut="return false">
+                            <button type="button" class="btn btn-outline-secondary" id="buttonInput" onclick="togglePSWVisibility()">Mostrar</button>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="password_confirm" class="form-label">Repitir contraseña:</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control bg-gris" name="password_confirm" id="passwordConfirmInput" oncopy="return false" onpaste="return false" oncut="return false">
+                            <button type="button" class="btn btn-outline-secondary" id="buttonConfirm" onclick="toggleConfirmVisibility()">Mostrar</button>
+                        </div>
+                    </div>
+                    <!-- <div class="mb-4 form-check">
+                        <input type="checkbox" name="connected" class="form-check-input">
+                        <label for="connected">Mantenerme conectado</label>
+                    </div> -->
+                    <div class="d-grid">
+                        <div class="text-center">
+                            <button type="submit" class="btn bg w-45 text-white">Guardar</button>
+                        </div>
+                    </div>
+
+                    <div class="my-3">
+                        <span><a href="{{ url_for('views.login') }}">Regresar a Iniciar sesión</a></span> <br><br>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        
+    </div>
+    
+    <script>
+        function togglePSWVisibility() {
+        var passwordInput = document.getElementById("passwordInput");
+        var toggleButton = document.getElementById("buttonInput");
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            toggleButton.textContent = "Ocultar";
+        } else {
+            passwordInput.type = "password";
+            toggleButton.textContent = "Mostrar";
+        }
+    }
+
+    function toggleConfirmVisibility() {
+        var passwordConfirmInput = document.getElementById("passwordConfirmInput");
+        var toggleButton = document.getElementById("buttonConfirm");
+        if (passwordConfirmInput.type === "password") {
+            passwordConfirmInput.type = "text";
+            toggleButton.textContent = "Ocultar";
+        } else {
+            passwordConfirmInput.type = "password";
+            toggleButton.textContent = "Mostrar";
+        }
+    }
+
+    document.getElementById("passwordForm").addEventListener("submit", function(event) {
+    var passwordInput = document.getElementById("passwordInput").value;
+    var passwordConfirm = document.getElementById("passwordConfirmInput").value;
+    var passwordMessage = document.getElementById("passwordMessage");
+    var successMessage = document.getElementById("successMessage"); // Nuevo elemento para el mensaje de éxito
+
+    var message = "";
+
+    if (!(/[A-Z]/.test(passwordInput)) || (!(/\d/.test(passwordInput))) || (passwordInput.length < 8 || passwordInput.length > 16)) {
+        // Mensaje de alerta si la contraseña no cumple con las condiciones
+        passwordMessage.textContent = "Cuenta de acceso incorrecta.";
+        passwordMessage.classList.remove("d-none");
+        setTimeout(function() {
+            passwordMessage.classList.add("d-none");
+        }, 10000);
+        event.preventDefault();
+        return;
+    } else if (passwordInput !== passwordConfirm) {
+        // Mensaje de alerta si las contraseñas no coinciden
+        passwordMessage.textContent = "Las contraseñas no coinciden. Por favor, inténtelo de nuevo.";
+        passwordMessage.classList.remove("d-none");
+        setTimeout(function() {
+            passwordMessage.classList.add("d-none");
+        }, 10000);
+        event.preventDefault();
+        return;
+    } else {
+        // Mostrar mensaje de éxito y cambiar el estilo después de 10 segundos
+        successMessage.classList.remove("d-none");
+        setTimeout(function() {
+            successMessage.classList.add("alert-primary");
+            setTimeout(function() {
+                // Envía el formulario después de mostrar el mensaje de éxito y esperar 10 segundos
+                document.getElementById("passwordForm").submit();
+            }, 0); // Envía el formulario después de mostrar el mensaje de éxito
+        }, 10000); // Esperar 10 segundos antes de cambiar la ventana
+        event.preventDefault(); // Prevenir el envío del formulario inmediatamente
+    }
+});
+
+
+
+    
+    </script> 
+        <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    
+</body>
+</html>

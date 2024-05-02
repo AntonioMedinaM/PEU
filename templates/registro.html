@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEU</title>
+    <link rel="icon"  type="image/png" href="{{ url_for('static', filename='IFTlogo.svg') }}">
+    <link href = "{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <!-- <link href = "bootstrap.min.css" rel="stylesheet"> -->
+    <style>
+        body{
+            /* background: linear-gradient(90deg, rgba(94,136,51,0.9267879026610644) 0%, rgba(152,194,80,1) 52%, rgba(203,203,203,1) 92%); */
+            background: rgb(0,0,0);
+background: linear-gradient(90deg, rgba(0,0,0,0.9267879026610644) 0%, rgba(82,138,118,1) 50%, rgba(116,194,167,1) 100%);
+        }
+        .bg{
+            background: rgb(0,0,0);
+background: linear-gradient(90deg, rgba(0,0,0,0.9267879026610644) 0%, rgba(82,138,118,1) 50%, rgba(116,194,167,1) 100%);
+        }
+        .bg-gris{
+            background: rgb(211, 211, 211);
+        }
+     
+        
+    </style>
+</head>
+<body>
+
+    <div class="container w-50 bg-white mt-5 rounded shadow">
+        <div class="row align-items-stretch">
+            <div class="col bg-white p-5 rounded-end">
+                <!-- <div class="text-end">
+                    <img src="finn.png"> 
+                </div> -->
+
+                <h2 class="fw-fold text-center py-2">Registro</h2>
+    
+                <form action="{{ url_for('views.registro_usuario') }} " method="POST" id="passwordForm" onsubmit="return validarContrasena()">
+                    <div class="mb-4">
+                        <label for="nombre" class="form-label">Nombre completo:</label>
+                        <input type="text" class="form-control bg-gris" name="nombre">
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label">Género:</label> <br>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="sexo" id="masculino" value="Masculino" checked>
+                            <label class="form-check-label" for="masculino">Masculino</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="sexo" id="femenino" value="Femenino">
+                            <label class="form-check-label" for="femenino">Femenino</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="sexo" id="otro" value="Otro">
+                            <label class="form-check-label" for="otro">Otro</label>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="email" class="form-label">Correo electrónico:</label>
+                        <input type="email" class="form-control bg-gris" name="email">
+                    </div>
+                    <div class="mb-4">
+                        <label for="password" class="form-label" id="password">Contraseña:</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control bg-gris" name="password" id="passwordInput" oncopy="return false" onpaste="return false" oncut="return false">
+                            <button type="button" class="btn btn-outline-secondary" onclick="togglePasswordVisibility()">Mostrar</button>
+                            <!-- <button type="button" class="btn btn-outline-secondary" onclick="generarContrasena()">Generar</button> -->
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <div id="passwordMessage"></div>
+                        <div id="successMessage" class="alert alert-primary mt-2 d-none" role="alert">
+                            Los datos fueron guardados exitosamente.
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn bg w-45 text-white">Guardar</button>
+                        </div>
+                    </div>
+
+                    <div class="my-3">
+                        <span><a href="{{ url_for('views.login') }}">Regresar a Iniciar sesión</a></span> <br>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        
+    </div>
+
+    <script>
+        function togglePasswordVisibility() {
+            var passwordInput = document.getElementById("passwordInput");
+            var toggleButton = document.querySelector('button');
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                toggleButton.textContent = "Ocultar";
+            } else {
+                passwordInput.type = "password";
+                toggleButton.textContent = "Mostrar";
+            }
+        }
+        // function generarContrasena() {
+        //     var contrasena = '';
+        //     var caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        //     for (var i = 0; i < 10; i++) { // Generar una contraseña de 10 caracteres
+        //         contrasena += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+        //     }
+        //     // alert(contrasena);
+        //     document.getElementById("passwordInput").value = contrasena;
+        // }
+
+        document.getElementById("passwordForm").addEventListener("submit", function(event) {
+    var passwordInput = document.getElementById("passwordInput").value;
+    var passwordMessage = document.getElementById("passwordMessage");
+    var successMessage = document.getElementById("successMessage"); // Nuevo elemento para el mensaje de éxito
+
+    var message = "";
+
+    if (!(/[A-Z]/.test(passwordInput))) {
+        message += "<span style='color: red;'>La contraseña debe contener al menos una mayúscula.</span><br>";
+        event.preventDefault();
+    }
+
+    if (!(/\d/.test(passwordInput))) {
+        message += "<span style='color: red;'>La contraseña debe contener al menos un número.</span><br>";
+        event.preventDefault();
+    }
+
+    if (passwordInput.length < 8 || passwordInput.length > 16) {
+        message += "<span style='color: red;'>La contraseña debe tener entre 8 y 16 caracteres.</span>";
+        event.preventDefault();
+    }
+
+    passwordMessage.innerHTML = message;
+
+    if (message === "") {
+        // Mostrar mensaje de éxito y cambiar el estilo después de 10 segundos
+        successMessage.classList.remove("d-none");
+        setTimeout(function() {
+            successMessage.classList.add("alert-primary");
+            setTimeout(function() {
+                // Envía el formulario después de mostrar el mensaje de éxito y esperar 10 segundos
+                document.getElementById("passwordForm").submit();
+            }, 0); // Envía el formulario después de mostrar el mensaje de éxito
+        }, 10000); // Esperar 10 segundos antes de cambiar la ventana
+        event.preventDefault(); // Prevenir el envío del formulario inmediatamente
+    }
+
+    setTimeout(function() {
+        successMessage.classList.add("d-none");
+    }, 10000); // Ocultar el mensaje de éxito después de 10 segundos
+});
+
+    </script>
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    <!-- <script src="bootstrap.bundle.min.js"></script> -->
+    
+
+</body>
+</html>

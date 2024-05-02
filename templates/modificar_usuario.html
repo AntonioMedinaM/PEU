@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEU</title>
+    <link rel="icon"  type="image/png" href="{{ url_for('static', filename='IFTlogo.svg') }}">
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <style>
+        body{
+            background: rgb(0,0,0);
+            background: linear-gradient(90deg, rgba(0,0,0,0.9267879026610644) 0%, rgba(82,138,118,1) 50%, rgba(116,194,167,1) 100%);
+        }
+        .bg{
+            background: rgb(0,0,0);
+            background: linear-gradient(90deg, rgba(0,0,0,0.9267879026610644) 0%, rgba(82,138,118,1) 50%, rgba(116,194,167,1) 100%);
+        }
+        .bg-gris{
+            background: rgb(211, 211, 211);
+        }
+    </style>
+</head>
+<body>
+    <div class="container w-50 bg-white mt-5 rounded shadow">
+        <div class="row align-items-stretch">
+            <div class="col bg-white p-5 rounded-end">
+                <h2 class="fw-fold text-center py-3">Modificar usuario</h2>
+                <form action="{{ url_for('views.modificar_usuario', email=usuario['email']) }}" method="POST" id="userDataForm">
+                    <div class="mb-4">
+                        <label for="nombre" class="form-label">Nombre completo:</label>
+                        <input type="text" id="nombre" class="form-control bg-gris" name="nombre" value="{{ usuario['nombre'] }}" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label">Género:</label> <br>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="sexo" id="masculino" value="Masculino" checked>
+                            <label class="form-check-label" for="masculino">Masculino</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="sexo" id="femenino" value="Femenino">
+                            <label class="form-check-label" for="femenino">Femenino</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="sexo" id="otro" value="Otro">
+                            <label class="form-check-label" for="otro">Otro</label>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="email" class="form-label">Correo electrónico:</label>
+                        <input type="email" id="email" class="form-control bg-gris" name="email" value="{{ usuario['email'] }}" required>
+                    </div>
+                    <div id="successMessage" class="alert alert-primary d-none" role="alert">
+                        Los datos fueron guardados exitosamente.
+                    </div>
+                    <div id="confirmationModal" class="modal fade" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Confirmar envío</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    ¿Desea continuar aún si ningún dato ha sido modificado?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="submit" class="btn bg text-white">Continuar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-grid">
+                        <div class="text-center">
+                            <button type="button" id="submitButton" class="btn bg w-45 text-white">Guardar</button>
+                        </div>
+                    </div>
+                    <div class="my-3">
+                        <span><a href="{{ url_for('views.perfil') }}">Regresar</a></span> <br>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById("submitButton").addEventListener("click", function(event) {
+            var formData = new FormData(document.getElementById("userDataForm"));
+            var formDataValues = Array.from(formData.values());
+            var formUnchanged = formDataValues.every(value => value === "{{ usuario['nombre'] }}" || value === "{{ usuario['sexo'] }}" || value === "{{ usuario['email'] }}");
+
+            if (formUnchanged) {
+                // Mostrar modal de confirmación si ningún dato ha sido modificado
+                var confirmationModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+                confirmationModal.show();
+            } else {
+                // Si los datos han sido modificados, mostrar mensaje de éxito y enviar formulario
+                var successMessage = document.getElementById("successMessage");
+                successMessage.classList.remove("d-none");
+                setTimeout(function() {
+                    document.getElementById("userDataForm").submit();
+                }, 10000); // Esperar 10 segundos antes de enviar el formulario
+            }
+        });
+    </script>
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+</body>
+</html>
